@@ -1,14 +1,14 @@
-package br.com.zup.pgg.entity;
+package br.com.zup.pgg.model;
 
 public class Cliente {
 
 	private String nome;
 	private int idade;
-	private Long cpf;
+	private String cpf;
 	private String email;
-	private int telefone;
+	private String telefone;
 	private String endereco;
-
+	
 	
 	public String getNome() {
 		return nome;
@@ -26,13 +26,6 @@ public class Cliente {
 		this.idade = idade;
 	}
 
-	public Long getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(Long cpf) {
-		this.cpf = cpf;
-	}
 
 	public String getEmail() {
 		return email;
@@ -42,13 +35,7 @@ public class Cliente {
 		this.email = email;
 	}
 
-	public int getTelefone() {
-		return telefone;
-	}
 
-	public void setTelefone(int telefone) {
-		this.telefone = telefone;
-	}
 
 	public String getEndereco() {
 		return endereco;
@@ -56,6 +43,22 @@ public class Cliente {
 
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 }
