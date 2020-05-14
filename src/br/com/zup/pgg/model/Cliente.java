@@ -8,8 +8,7 @@ public class Cliente {
 	private String email;
 	private String telefone;
 	private String endereco;
-	
-	
+
 	public String getNome() {
 		return nome;
 	}
@@ -26,7 +25,6 @@ public class Cliente {
 		this.idade = idade;
 	}
 
-
 	public String getEmail() {
 		return email;
 	}
@@ -34,8 +32,6 @@ public class Cliente {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-
 
 	public String getEndereco() {
 		return endereco;
@@ -61,4 +57,11 @@ public class Cliente {
 		this.cpf = cpf;
 	}
 
+	@Override
+	public String toString() {
+		this.getNome();
+		this.getIdade();
+		
+		return super.toString();
+	}
 }
