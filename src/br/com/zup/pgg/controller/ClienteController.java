@@ -54,6 +54,8 @@ public class ClienteController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		PrintWriter writer = response.getWriter();
+		String cpf = request.getParameter("cpf");
 
 		Cliente cliente = new Cliente();
 		cliente.setNome(request.getParameter("nome"));
@@ -63,11 +65,17 @@ public class ClienteController extends HttpServlet {
 		cliente.setTelefone(request.getParameter("telefone"));
 		cliente.setEndereco(request.getParameter("endereco"));
 
-		listaDeCliente.put(cliente.getCpf(), cliente);
-		response.getWriter()
-				.print("nome :" + cliente.getNome() + "\nidade :" + cliente.getIdade() + "\ncpf :" + cliente.getCpf()
-						+ "\nemail :" + cliente.getEmail() + "\ntelefone :" + cliente.getTelefone() + "\nendereco :"
-						+ cliente.getEndereco());
+		if (listaDeCliente.containsKey(cpf)) {
+			writer.print("Cliente ja existente");
+		} else {
+
+			listaDeCliente.put(cliente.getCpf(), cliente);
+			response.getWriter()
+					.print("nome :" + cliente.getNome() + "\nidade :" + cliente.getIdade() + "\ncpf :"
+							+ cliente.getCpf() + "\nemail :" + cliente.getEmail() + "\ntelefone :"
+							+ cliente.getTelefone() + "\nendereco :" + cliente.getEndereco());
+			writer.print("\nCliente inserido com sucesso!");
+		}
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
@@ -87,9 +95,13 @@ public class ClienteController extends HttpServlet {
 				clienteBuscado.setEndereco(request.getParameter("endereco"));
 
 				listaDeCliente.put(cpf, clienteBuscado);
-				
+				response.getWriter();
+				writer.print("nome :" + clienteBuscado.getNome() + "\nidade :" + clienteBuscado.getIdade() + "\ncpf :"
+						+ clienteBuscado.getCpf() + "\nemail :" + clienteBuscado.getEmail() + "\ntelefone :"
+						+ clienteBuscado.getTelefone() + "\nendereco :" + clienteBuscado.getEndereco());
+
 			} else {
-				
+
 				writer.print("CPF NAO ENCONTRADO!");
 			}
 			writer.print("Cliente Atualizado com sucesso!");
@@ -101,28 +113,4 @@ public class ClienteController extends HttpServlet {
 		listaDeCliente.remove(cpf);
 
 	}
-
-	public static boolean validaNome(String qtdCaractereNome) throws RegrasException {
-
-		if (qtdCaractereNome.length() > 3 || qtdCaractereNome.length() < 30) {
-			throw new RegrasException(MENSSAGEM_DE_CARACTERE_INVÁLIDO);
-		}
-		return false;
-
-	}
-
 }
-/**
-Cliente cliente = new Cliente();
-cliente.setNome(request.getParameter("nome"));
-cliente.setIdade(Integer.parseInt(request.getParameter("idade")));
-cliente.setCpf(request.getParameter("cpf"));
-cliente.setEmail(request.getParameter("email"));
-cliente.setTelefone(request.getParameter("telefone"));
-cliente.setEndereco(request.getParameter("endereco"));
-
-listaDeCliente.put(cliente.getCpf(), cliente);
-response.getWriter()
-		.print("nome :" + cliente.getNome() + "\nidade :" + cliente.getIdade() + "\ncpf :" + cliente.getCpf()
-				+ "\nemail :" + cliente.getEmail() + "\ntelefone :" + cliente.getTelefone() + "\nendereco :"
-				+ cliente.getEndereco());**/
