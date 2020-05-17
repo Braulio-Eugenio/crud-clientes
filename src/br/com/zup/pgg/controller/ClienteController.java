@@ -16,6 +16,8 @@ import br.com.zup.pgg.model.Cliente;
 @WebServlet(urlPatterns = "/clientes")
 public class ClienteController extends HttpServlet {
 
+	private static final String CLIENTE_JA_EXISTE = "Cliente ja existe!";
+	private static final String CPF_NULO = "cpf nulo!";
 	private static final long serialVersionUID = 1L;
 	public static Map<String, Cliente> listaDeCliente = new HashMap<String, Cliente>();
 
@@ -31,7 +33,7 @@ public class ClienteController extends HttpServlet {
 
 			} else {
 				writer.print("CPF NÃO ENCONTRADO!");
-			} 
+			}
 
 		} else {
 			for (Cliente cliente : listaDeCliente.values()) {
@@ -48,10 +50,10 @@ public class ClienteController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter writer = response.getWriter();
-		String cpf = request.getParameter("cpf");		
-		Cliente cliente = new Cliente();
-		if (cpf != null) {
+		String cpf = request.getParameter("cpf");
 
+		Cliente cliente = new Cliente();
+		if (cpf != "") {
 			cliente.setNome(request.getParameter("nome"));
 			cliente.setIdade(Integer.parseInt(request.getParameter("idade")));
 			cliente.setCpf(request.getParameter("cpf"));
@@ -59,22 +61,23 @@ public class ClienteController extends HttpServlet {
 			cliente.setTelefone(request.getParameter("telefone"));
 			cliente.setEndereco(request.getParameter("endereco"));
 
-		}
+			if (!listaDeCliente.containsKey(cpf)) {
 
-		if (listaDeCliente.containsKey(cpf) || cpf.equals(null) ) {
+				listaDeCliente.put(cliente.getCpf(), cliente);
 
-			writer.print("O CLIENTE JÁ EXISTE OU O CPF É NULO");
+				response.getWriter()
+						.print("nome :" + cliente.getNome() + "\nidade :" + cliente.getIdade() + "\ncpf :"
+								+ cliente.getCpf() + "\nemail :" + cliente.getEmail() + "\ntelefone :"
+								+ cliente.getTelefone() + "\nendereco :" + cliente.getEndereco());
+				writer.print("\nCliente inserido com sucesso!");
 
-		}
+			}
 
-		 else {
+			writer.print(CLIENTE_JA_EXISTE);
 
-			listaDeCliente.put(cliente.getCpf(), cliente);
-			response.getWriter()
-					.print("nome :" + cliente.getNome() + "\nidade :" + cliente.getIdade() + "\ncpf :"
-							+ cliente.getCpf() + "\nemail :" + cliente.getEmail() + "\ntelefone :"
-							+ cliente.getTelefone() + "\nendereco :" + cliente.getEndereco());
-			writer.print("\nCliente inserido com sucesso!");
+		} else {
+
+			writer.print(CPF_NULO);
 		}
 
 	}
@@ -126,6 +129,5 @@ public class ClienteController extends HttpServlet {
 		writer.println("Telefone: " + clienteBuscado.getTelefone());
 		writer.println("Endereco: " + clienteBuscado.getEndereco());
 	}
-	
 
 }
