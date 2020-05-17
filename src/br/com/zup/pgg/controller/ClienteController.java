@@ -16,6 +16,9 @@ import br.com.zup.pgg.model.Cliente;
 @WebServlet(urlPatterns = "/clientes")
 public class ClienteController extends HttpServlet {
 
+	private static final String CLIENTE_INSERIDO = "\nCliente inserido com sucesso!";
+	private static final String CLIENTE_JA_EXISTE = "Cliente ja existe";
+	private static final String CPF_NULO = "cpf nulo";
 	private static final long serialVersionUID = 1L;
 	public static Map<String, Cliente> listaDeCliente = new HashMap<String, Cliente>();
 
@@ -67,13 +70,15 @@ public class ClienteController extends HttpServlet {
 						.print("nome :" + cliente.getNome() + "\nidade :" + cliente.getIdade() + "\ncpf :"
 								+ cliente.getCpf() + "\nemail :" + cliente.getEmail() + "\ntelefone :"
 								+ cliente.getTelefone() + "\nendereco :" + cliente.getEndereco());
-				writer.print("\nCliente inserido com sucesso!");
+				writer.print(CLIENTE_INSERIDO);
 			
 			}
 			
-			writer.print("Cliente ja existe");
+			writer.print(CLIENTE_JA_EXISTE);
+			
 		}else {
-			writer.print("cpf nulo");
+			
+			writer.print(CPF_NULO);
 		}
 		
 	}
