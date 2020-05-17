@@ -12,12 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.zup.pgg.model.Cliente;
-import br.com.zup.pgg.regrasException.RegrasException;
 
 @WebServlet(urlPatterns = "/clientes")
 public class ClienteController extends HttpServlet {
 
-	private static final String MENSSAGEM_DE_CARACTERE_INVÁLIDO = "Quantidade de caractere inválido! por favor digite um nome com uma quantidade superior a 3 caracteres e inferior a 30 caracteres. ";
+	private static final long serialVersionUID = 1L;
 	public static Map<String, Cliente> listaDeCliente = new HashMap<String, Cliente>();
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,17 +27,11 @@ public class ClienteController extends HttpServlet {
 
 			if (listaDeCliente.containsKey(cpf)) {
 
-				Cliente clienteBuscado = listaDeCliente.get(cpf);
-				writer.println("Nome: " + clienteBuscado.getNome());
-				writer.println("Idade: " + clienteBuscado.getIdade());
-				writer.println("Email: " + clienteBuscado.getEmail());
-				writer.println("Cpf: " + clienteBuscado.getCpf());
-				writer.println("Telefone: " + clienteBuscado.getTelefone());
-				writer.println("Endereco: " + clienteBuscado.getEndereco());
+				buscaCliente(req, resp);
 
 			} else {
 				writer.print("CPF NÃO ENCONTRADO!");
-			}
+			} 
 
 		} else {
 			for (Cliente cliente : listaDeCliente.values()) {
@@ -55,19 +48,26 @@ public class ClienteController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter writer = response.getWriter();
-		String cpf = request.getParameter("cpf");
-
+		String cpf = request.getParameter("cpf");		
 		Cliente cliente = new Cliente();
-		cliente.setNome(request.getParameter("nome"));
-		cliente.setIdade(Integer.parseInt(request.getParameter("idade")));
-		cliente.setCpf(request.getParameter("cpf"));
-		cliente.setEmail(request.getParameter("email"));
-		cliente.setTelefone(request.getParameter("telefone"));
-		cliente.setEndereco(request.getParameter("endereco"));
+		if (cpf != null) {
 
-		if (listaDeCliente.containsKey(cpf)) {
-			writer.print("Cliente ja existente");
-		} else {
+			cliente.setNome(request.getParameter("nome"));
+			cliente.setIdade(Integer.parseInt(request.getParameter("idade")));
+			cliente.setCpf(request.getParameter("cpf"));
+			cliente.setEmail(request.getParameter("email"));
+			cliente.setTelefone(request.getParameter("telefone"));
+			cliente.setEndereco(request.getParameter("endereco"));
+
+		}
+
+		if (listaDeCliente.containsKey(cpf) || cpf.equals(null) ) {
+
+			writer.print("O CLIENTE JÁ EXISTE OU O CPF É NULO");
+
+		}
+
+		 else {
 
 			listaDeCliente.put(cliente.getCpf(), cliente);
 			response.getWriter()
@@ -76,6 +76,7 @@ public class ClienteController extends HttpServlet {
 							+ cliente.getTelefone() + "\nendereco :" + cliente.getEndereco());
 			writer.print("\nCliente inserido com sucesso!");
 		}
+
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
@@ -113,4 +114,18 @@ public class ClienteController extends HttpServlet {
 		listaDeCliente.remove(cpf);
 
 	}
+
+	public static void buscaCliente(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		PrintWriter writer = resp.getWriter();
+		String cpf = req.getParameter("cpf");
+		Cliente clienteBuscado = listaDeCliente.get(cpf);
+		writer.println("Nome: " + clienteBuscado.getNome());
+		writer.println("Idade: " + clienteBuscado.getIdade());
+		writer.println("Email: " + clienteBuscado.getEmail());
+		writer.println("Cpf: " + clienteBuscado.getCpf());
+		writer.println("Telefone: " + clienteBuscado.getTelefone());
+		writer.println("Endereco: " + clienteBuscado.getEndereco());
+	}
+	
+
 }
