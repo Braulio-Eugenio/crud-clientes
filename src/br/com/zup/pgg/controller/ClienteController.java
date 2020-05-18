@@ -33,6 +33,7 @@ public class ClienteController extends HttpServlet {
 				buscaCliente(req, resp);
 
 			} else {
+				
 				writer.print("CPF NÃO ENCONTRADO!");
 			}
 
