@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.zup.pgg.model.Cliente;
+import br.com.zup.pgg.service.ClienteService;
 
 @WebServlet(urlPatterns = "/clientes")
 public class ClienteController extends HttpServlet {
@@ -21,6 +22,7 @@ public class ClienteController extends HttpServlet {
 	private static final String CPF_NULO = "cpf nulo";
 	private static final long serialVersionUID = 1L;
 	public static Map<String, Cliente> listaDeCliente = new HashMap<String, Cliente>();
+	ClienteService clienteService = new ClienteService();
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PrintWriter writer = resp.getWriter();
@@ -33,12 +35,12 @@ public class ClienteController extends HttpServlet {
 				buscaCliente(req, resp);
 
 			} else {
-				
+
 				writer.print("CPF NÃO ENCONTRADO!");
 			}
 
 		} else {
-			for (Cliente cliente : listaDeCliente.values()) {
+			for (Cliente cliente : clienteService.buscaListaClientes()) {
 				writer.println("Nome: " + cliente.getNome());
 				writer.println("Idade: " + cliente.getIdade());
 				writer.println("Email: " + cliente.getEmail());
@@ -65,23 +67,23 @@ public class ClienteController extends HttpServlet {
 
 			if (!listaDeCliente.containsKey(cpf)) {
 
-				listaDeCliente.put(cliente.getCpf(), cliente);
+				clienteService.insereCliente(cliente);
 
 				response.getWriter()
 						.print("nome :" + cliente.getNome() + "\nidade :" + cliente.getIdade() + "\ncpf :"
 								+ cliente.getCpf() + "\nemail :" + cliente.getEmail() + "\ntelefone :"
 								+ cliente.getTelefone() + "\nendereco :" + cliente.getEndereco());
 				writer.print(CLIENTE_INSERIDO);
-			
+
 			}
-			
+
 			writer.print(CLIENTE_JA_EXISTE);
-			
-		}else {
-			
+
+		} else {
+
 			writer.print(CPF_NULO);
 		}
-		
+
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
