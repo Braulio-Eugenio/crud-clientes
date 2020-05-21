@@ -24,4 +24,13 @@ public class ClienteService {
 	public void deleteCliente(String cpf) {
 		clienteDao.deletaCliente(cpf);
 	}
+	
+	public Cliente clientePorCpf(String cpf) {
+		return clienteDao.listaClientesPorCpf(cpf);
+	}
+	
+	public void alteraCliente(Cliente cliente, String cpf) {
+		clienteDao.alteraCliente(cliente, cpf);
+		
+	}
 }
