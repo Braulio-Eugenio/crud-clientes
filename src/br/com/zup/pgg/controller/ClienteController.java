@@ -47,6 +47,7 @@ public class ClienteController extends HttpServlet {
 				writer.println("Cpf: " + cliente.getCpf());
 				writer.println("Telefone: " + cliente.getTelefone());
 				writer.println("Endereco: " + cliente.getEndereco());
+				
 			}
 		}
 	}
@@ -118,7 +119,7 @@ public class ClienteController extends HttpServlet {
 
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String cpf = req.getParameter("cpf");
-		listaDeCliente.remove(cpf);
+		clienteService.deleteCliente(cpf);
 
 	}
 

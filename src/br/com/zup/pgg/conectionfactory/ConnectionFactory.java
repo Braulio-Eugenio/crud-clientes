@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConnectionFactory {
 
-	public Connection getConnection()  {
+	public static Connection getConnection()  {
 		try {
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -24,6 +24,11 @@ public class ConnectionFactory {
 		}
 		return null;
 
+	}
+
+	public static void close(Connection c) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

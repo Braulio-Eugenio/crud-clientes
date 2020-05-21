@@ -21,5 +21,7 @@ public class ClienteService {
 		
 		return clienteDao.listaClientes();
 	}
-	
+	public void deleteCliente(String cpf) {
+		clienteDao.deletaCliente(cpf);
+	}
 }

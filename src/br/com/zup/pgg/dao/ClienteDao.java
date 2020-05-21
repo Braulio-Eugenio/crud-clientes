@@ -12,7 +12,7 @@ import br.com.zup.pgg.model.Cliente;
 
 public class ClienteDao {
 
-	Connection conn = new ConnectionFactory().getConnection();
+	Connection conn = ConnectionFactory.getConnection();
 
 	public void insereCliente(Cliente cliente) {
 
@@ -40,7 +40,6 @@ public class ClienteDao {
 	}
 
 	public List<Cliente> listaClientes() {
-		Cliente cliente = new  Cliente();
 		List<Cliente> clienteLista = new ArrayList<Cliente>();
 		String sql = "select * from cliente";
 
@@ -49,25 +48,70 @@ public class ClienteDao {
 
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				
+
+				Cliente cliente = new Cliente();
 				cliente.setNome(rs.getString("nome"));
 				cliente.setIdade(rs.getInt("idade"));
 				cliente.setCpf(rs.getString("cpf"));
 				cliente.setEmail(rs.getString("email"));
 				cliente.setTelefone(rs.getString("telefone"));
 				cliente.setEndereco(rs.getString("endereco"));
-				
+
 				clienteLista.add(cliente);
 			}
 			rs.close();
 			stmt.close();
 		} catch (SQLException e) {
-			
+
 		}
 		return clienteLista;
 
 	}
-	
-	
 
+	public List<Cliente> listaClientesPorCpf(String cpf) {
+		List<Cliente> clienteLista = new ArrayList<Cliente>();
+		String sql = "select cliente from cliente were=?";
+
+		try {
+			PreparedStatement stmt = conn.prepareStatement(sql);
+
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+
+				Cliente cliente = new Cliente();
+				cliente.setNome(rs.getString("nome"));
+				cliente.setIdade(rs.getInt("idade"));
+				cliente.setCpf(rs.getString("cpf"));
+				cliente.setEmail(rs.getString("email"));
+				cliente.setTelefone(rs.getString("telefone"));
+				cliente.setEndereco(rs.getString("endereco"));
+
+				clienteLista.add(cliente);
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.getErrorCode();
+		}
+		return clienteLista;
+
+	}
+
+	public void alteraCliente() {
+
+	}
+
+	public void deletaCliente(String cpf) {
+		
+		String sql = "delete from cliente where cpf=?";
+		try {
+			
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, cpf);
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			
+		}
+	}
 }
